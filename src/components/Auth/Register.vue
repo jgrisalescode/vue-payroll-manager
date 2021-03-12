@@ -1,15 +1,15 @@
 <template>
   <div class="register">
     <h1>Create account</h1>
-    <form class="ui form">
+    <form class="ui form" @submit.prevent="onRegister()">
       <div class="field">
-        <input type="text" placeholder="Email">
+        <input type="text" placeholder="Email" v-model="formData.email">
       </div>
       <div class="field">
-        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Password" v-model="formData.password">
       </div>
       <div class="field">
-        <input type="password" placeholder="Repeat password">
+        <input type="password" placeholder="Repeat password" v-model="formData.repeatPassword">
       </div>
       <button type="submit" class="ui button positive fluid">Register</button>
     </form>
@@ -23,6 +23,19 @@
 
     props: {
       changeForm: Function
+    },
+
+    setup(props) {
+      let formData = {}
+
+      const onRegister = () => {
+        console.log(formData)
+      }
+
+      return {
+        formData,
+        onRegister
+      }
     }
   }
 </script>
