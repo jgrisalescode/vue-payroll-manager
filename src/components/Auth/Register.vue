@@ -1,7 +1,19 @@
 <template>
-  <div>
-    <h2>Register</h2>
-    <button @click="changeForm">Login</button>
+  <div class="register">
+    <h1>Create account</h1>
+    <form class="ui form">
+      <div class="field">
+        <input type="text" placeholder="Email">
+      </div>
+      <div class="field">
+        <input type="password" placeholder="Password">
+      </div>
+      <div class="field">
+        <input type="password" placeholder="Repeat password">
+      </div>
+      <button type="submit" class="ui button positive fluid">Register</button>
+    </form>
+    <p @click="changeForm">Login</p>
   </div>
 </template>
 
@@ -16,5 +28,33 @@
 </script>
 
 <style lang="scss" scoped>
+  .register {
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0px 0px 38px -5px rgba(0,0,0,0.45);
+    width: 400px;
+    border-radius: 10px;
 
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    form {
+      input.error {
+        border-color: #faa;
+        background-color: #ffeded;
+      }
+    }
+
+    p {
+      text-align: center;
+      margin-top: 30px;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.6;
+      }
+    }
+  }
 </style>

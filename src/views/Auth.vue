@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <h2>We are in Auth</h2>
+  <div class="auth">
     <Login v-if="showLogin" :changeForm="changeForm"/>
     <Register v-if="!showLogin" :changeForm="changeForm"/>
   </div>
@@ -20,7 +19,7 @@
     },
 
     setup(props) {
-      let showLogin = ref(true)
+      let showLogin = ref(false)
 
       const changeForm = () => {
         showLogin.value = !showLogin.value
@@ -35,5 +34,17 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .auth {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgb(4, 78, 177);
+    background: linear-gradient(
+      0deg,
+      rbga(4,78,157, 1) 0%,
+      rgba(0,174,255,1) 100%
+    )
+  }
 </style>
