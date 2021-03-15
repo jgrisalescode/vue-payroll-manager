@@ -12,8 +12,10 @@
         />
       </router-link>
       <div class="menu right">
-        <router-link class="item" to="/account">Hello, User</router-link>
-        <span class="ui item logout">
+        <router-link class="item" to="/account">
+          Hello, {{ user.displayName || user.email }}
+        </router-link>
+        <span class="ui item logout" @click="logout()">
           <i class="sign-out icon"></i>
         </span>
       </div>
@@ -22,8 +24,24 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { auth } from "../../utils/firebase";
+
 export default {
   name: "Menu",
+
+  setup(props) {
+    const store = useStore();
+    const user = computed(() => store.state.user);
+
+    const logout = () => auth.signOut();
+
+    return {
+      user,
+      logout,
+    };
+  },
 };
 </script>
 
