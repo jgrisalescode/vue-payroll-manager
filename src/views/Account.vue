@@ -3,21 +3,37 @@
     <BasicLayout>
       <h1>Account</h1>
       <div class="account__section">
-        <p class="title">Change name (name....)</p>
-        <div>FORM</div>
+        <p class="title">
+          Change name
+          <span v-if="user.displayName">{{ user.displayName }}</span>
+        </p>
+        <ChangeName />
       </div>
     </BasicLayout>
   </div>
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
 import BasicLayout from "../layouts/BasicLayout";
+import ChangeName from "../components/Account/ChangeName";
 
 export default {
   name: "Account",
 
   components: {
     BasicLayout,
+    ChangeName,
+  },
+
+  setup(props) {
+    const store = useStore();
+    const user = computed(() => store.state.user);
+
+    return {
+      user,
+    };
   },
 };
 </script>
