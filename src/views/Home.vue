@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Payroll</h1>
+    <h1>We are in Payroll home</h1>
     <button class="ui button" @click="logout()">Logout</button>
   </div>
 </template>
