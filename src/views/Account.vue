@@ -5,9 +5,16 @@
       <div class="account__section">
         <p class="title">
           Change name
-          <span v-if="user.displayName">{{ user.displayName }}</span>
+          <span v-if="user.displayName">({{ user.displayName }})</span>
         </p>
         <ChangeName />
+      </div>
+      <div class="account__section">
+        <p class="title">
+          Change email
+          <span>({{ user.email }})</span>
+        </p>
+        <ChangeEmail />
       </div>
     </BasicLayout>
   </div>
@@ -18,6 +25,7 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 import BasicLayout from "../layouts/BasicLayout";
 import ChangeName from "../components/Account/ChangeName";
+import ChangeEmail from "../components/Account/ChangeEmail";
 
 export default {
   name: "Account",
@@ -25,6 +33,7 @@ export default {
   components: {
     BasicLayout,
     ChangeName,
+    ChangeEmail,
   },
 
   setup(props) {
