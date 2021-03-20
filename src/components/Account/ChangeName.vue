@@ -7,7 +7,13 @@
         v-model="name"
         :class="{ error: formError }"
       />
-      <button type="submit" class="ui button primary">Update</button>
+      <button
+        type="submit"
+        class="ui button primary"
+        :class="{ loading: loading }"
+      >
+        Update
+      </button>
     </form>
   </div>
 </template>
@@ -15,6 +21,7 @@
 <script>
 import { ref } from "vue";
 import * as Yup from "yup";
+import { auth } from "../../utils/firebase";
 
 export default {
   name: "ChangeName",
@@ -22,6 +29,7 @@ export default {
   setup(props) {
     let name = ref("");
     let formError = ref(false);
+    let loading = ref(false);
 
     const schemaForm = Yup.object().shape({
       name: Yup.string().min(6, true).required(true),
@@ -29,24 +37,31 @@ export default {
 
     const onChangeName = async () => {
       formError.value = false;
-      console.log("Changing name...");
-      console.log("New name: " + name.value);
+      loading.value = true;
 
       try {
         await schemaForm.validate({ name: name.value }, { abortEarly: false });
-        console.log("Data OK!!!✔");
+        // Request to Firebase
+        await auth.currentUser.updateProfile({
+          displayName: name.value,
+        });
+        try {
+        } catch (error) {
+          console.log(error);
+        }
       } catch (err) {
-        console.log("Data ERROR !!!❌");
         err.inner.forEach((error) => {
           formError.value = error.message;
         });
       }
+      loading.value = false;
     };
 
     return {
       name,
       onChangeName,
       formError,
+      loading,
     };
   },
 };
