@@ -35,6 +35,7 @@
 <script>
 import { ref } from "vue";
 import * as Yup from "yup";
+import { reauthenticate } from "../../utils/firebaseFunctions";
 
 export default {
   name: "CahngeEmail",
@@ -52,9 +53,18 @@ export default {
 
     const onChangeEmail = async () => {
       formError.value = {};
+      messageError.value = "";
       try {
         await schemaForm.validate(formData, { abortEarly: false });
-        console.log("Todo OK");
+        // Reques to Firebase
+        try {
+          const { email, password } = formData;
+          await reauthenticate(password);
+          console.log("Reauth OK");
+        } catch (error) {
+          console.log(error);
+          messageError.value = error.message;
+        }
       } catch (err) {
         err.inner.forEach((error) => {
           formError.value[error.path] = error.message;
