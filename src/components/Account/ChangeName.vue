@@ -20,6 +20,7 @@
 
 <script>
 import { ref } from "vue";
+import { useStore } from "vuex";
 import * as Yup from "yup";
 import { auth } from "../../utils/firebase";
 
@@ -27,6 +28,7 @@ export default {
   name: "ChangeName",
 
   setup(props) {
+    const store = useStore();
     let name = ref("");
     let formError = ref(false);
     let loading = ref(false);
@@ -45,6 +47,7 @@ export default {
         await auth.currentUser.updateProfile({
           displayName: name.value,
         });
+        store.dispatch("reloadUser");
         try {
         } catch (error) {
           console.log(error);
