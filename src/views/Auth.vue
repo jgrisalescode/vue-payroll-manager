@@ -1,5 +1,12 @@
 <template>
   <div class="auth">
+    <div class="ui message">
+      <div class="header">Yo can test the app with</div>
+      <ul class="list">
+        <li class="text-primary">User: user@example.com</li>
+        <li>Password: 123456</li>
+      </ul>
+    </div>
     <Login v-if="showLogin" :changeForm="changeForm" />
     <Register v-if="!showLogin" :changeForm="changeForm" />
   </div>
