@@ -27,13 +27,18 @@
           />
         </div>
       </div>
-      <button class="ui button primary" type="submit">Update</button>
+      <p v-if="errorMessage">{{ errorMessage }}</p>
+      <button class="ui button primary" type="submit" :class="{ loading }">
+        Update
+      </button>
     </form>
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
+import { auth } from "../../utils/firebase";
+import { reauthenticate } from "../../utils/firebaseFunctions";
 import * as Yup from "yup";
 
 export default {
@@ -42,6 +47,8 @@ export default {
   setup(props) {
     let formData = {};
     let formError = ref({});
+    let loading = ref(false);
+    let errorMessage = ref("");
 
     const schemaForm = Yup.object().shape({
       currentPassword: Yup.string().required(true),
@@ -52,21 +59,35 @@ export default {
     });
 
     const onChangePassword = async () => {
+      loading.value = true;
       formError.value = {};
+      errorMessage.value = "";
       try {
         await schemaForm.validate(formData, { abortEarly: false });
-        console.log("Alles gut");
+        // Request to Firebase
+        try {
+          const { currentPassword, newPassword } = formData;
+          await reauthenticate(currentPassword);
+          await auth.currentUser.updatePassword(newPassword);
+          await auth.signOut();
+        } catch (error) {
+          console.log(error);
+          errorMessage.value = error.message;
+        }
       } catch (err) {
         err.inner.forEach((error) => {
           formError.value[error.path] = error.message;
         });
       }
+      loading.value = false;
     };
 
     return {
       formData,
       formError,
       onChangePassword,
+      loading,
+      errorMessage,
     };
   },
 };
