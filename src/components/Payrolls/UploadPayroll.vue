@@ -1,7 +1,13 @@
 <template>
   <div class="upload-payroll">
-    <button class="ui button primary">New payroll</button>
-    <form class="ui form upload-payroll__form" @submit.prevent="">
+    <button class="ui button primary" @click="showCloseForm">
+      New payroll
+    </button>
+    <form
+      class="ui form upload-payroll__form"
+      :class="{ open: showForm }"
+      @submit.prevent=""
+    >
       <div class="field">
         <!-- Custom a input file using a label id matches 😅-->
         <label for="file" class="ui icon button">
@@ -23,15 +29,42 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
   name: "UploadPayroll",
+
+  setup(props) {
+    let showForm = ref(false);
+
+    const showCloseForm = () => {
+      showForm.value = !showForm.value;
+    };
+
+    return {
+      showForm,
+      showCloseForm,
+    };
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.upload-payroll__form {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+.upload-payroll {
+  > .ui.button.primary {
+    margin-bottom: 30px;
+  }
+  &__form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease;
+
+    &.open {
+      height: 200px;
+    }
+  }
 }
 </style>
