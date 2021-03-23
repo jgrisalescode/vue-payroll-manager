@@ -29,7 +29,9 @@
           </div>
         </div>
       </div>
-      <button class="ui button positive">Upload payroll</button>
+      <button class="ui button positive" :class="{ loading }">
+        Upload payroll
+      </button>
       <p v-if="error">{{ error }}</p>
     </form>
   </div>
@@ -91,8 +93,17 @@ export default {
         } catch (error) {
           console.log(error);
         }
+
+        // Cleaning after
+        loading.value = false;
+        file.value = null;
+        date.value = null;
+        showForm.value = false;
+        error.value = null;
+        document.getElementById("file").value = "";
+      } else {
+        error.value = "Upload a payrroll and asign a date for it.";
       }
-      loading.value = false;
     };
 
     return {
