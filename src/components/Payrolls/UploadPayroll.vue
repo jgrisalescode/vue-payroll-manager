@@ -37,6 +37,8 @@
 
 <script>
 import { ref } from "vue";
+import { v4 as uuidv4 } from "uuid";
+import { auth, storage } from "../../utils/firebase";
 
 export default {
   name: "UploadPayroll",
@@ -67,10 +69,20 @@ export default {
       date.value = e.target.value;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       if (file.value && date.value) {
-        console.log("Uploading payroll");
+        loading.value = true;
+        try {
+          const fileName = uuidv4();
+          await storage
+            .ref(auth.currentUser.uid)
+            .child(`${fileName}.pdf`)
+            .put(file.value);
+        } catch (error) {
+          console.log(error);
+        }
       }
+      loading.value = false;
     };
 
     return {
