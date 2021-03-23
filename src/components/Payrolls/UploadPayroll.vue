@@ -38,7 +38,7 @@
 <script>
 import { ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
-import { auth, storage } from "../../utils/firebase";
+import { auth, storage, db } from "../../utils/firebase";
 
 export default {
   name: "UploadPayroll",
@@ -78,6 +78,16 @@ export default {
             .ref(auth.currentUser.uid)
             .child(`${fileName}.pdf`)
             .put(file.value);
+
+          const payrollUrl = await storage
+            .ref(`${auth.currentUser.uid}/${fileName}.pdf`)
+            .getDownloadURL();
+
+          await db.collection(auth.currentUser.uid).add({
+            payrollUrl,
+            date: new Date(date.value),
+            dateString: date.value,
+          });
         } catch (error) {
           console.log(error);
         }
