@@ -13,6 +13,7 @@
         <label for="file" class="ui icon button">
           <i class="file icon"></i>
           Select payroll
+          <span v-if="file">({{ file.name }})</span>
         </label>
         <input
           type="file"
@@ -29,6 +30,7 @@
         </div>
       </div>
       <button class="ui button positive">Upload payroll</button>
+      <p v-if="error">{{ error }}</p>
     </form>
   </div>
 </template>
@@ -52,8 +54,12 @@ export default {
 
     const uploadFile = (e) => {
       const fileTemp = e.target.files[0];
+      error.value = null;
+
       if (fileTemp.type === "application/pdf") {
         file.value = fileTemp;
+      } else {
+        error.value = "File not valid.";
       }
     };
 
@@ -62,9 +68,9 @@ export default {
     };
 
     const handleSubmit = () => {
-      console.log("Uploading payroll");
-      console.log("File -> ", file.value);
-      console.log("Date ->", date.value);
+      if (file.value && date.value) {
+        console.log("Uploading payroll");
+      }
     };
 
     return {
