@@ -10,7 +10,7 @@
     >
       <p>{{ formatDate(payroll.dateString) }}</p>
       <div class="action">
-        <a href="#" class="ui button positive">Download</a>
+        <a :href="payroll.payrollUrl" class="ui button positive" target="_blank">Download</a>
         <button class="ui button red">Delete</button>
       </div>
     </div>
