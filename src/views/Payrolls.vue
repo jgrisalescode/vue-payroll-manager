@@ -2,8 +2,8 @@
   <BasicLayout>
     <div class="payrolls">
       <h1>My payrolls</h1>
-      <UploadPayroll :getPayrolls="getPayrolls"/>
-      <PayrollList :payrolls="payrolls" />
+      <UploadPayroll :getPayrolls="getPayrolls" />
+      <PayrollList :payrolls="payrolls" :getPayrolls="getPayrolls" />
     </div>
   </BasicLayout>
 </template>
