@@ -45,6 +45,10 @@ import { auth, storage, db } from "../../utils/firebase";
 export default {
   name: "UploadPayroll",
 
+  props: {
+    getPayrolls: Function,
+  },
+
   setup(props) {
     let showForm = ref(false);
     let file = ref(null);
@@ -90,6 +94,7 @@ export default {
             date: new Date(date.value),
             dateString: date.value,
           });
+          props.getPayrolls();
         } catch (error) {
           console.log(error);
         }

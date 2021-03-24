@@ -2,7 +2,7 @@
   <BasicLayout>
     <div class="payrolls">
       <h1>My payrolls</h1>
-      <UploadPayroll />
+      <UploadPayroll :getPayrolls="getPayrolls"/>
       <PayrollList :payrolls="payrolls" />
     </div>
   </BasicLayout>
@@ -27,7 +27,7 @@ export default {
   setup(props) {
     let payrolls = ref(null);
 
-    const getPyrolls = async () => {
+    const getPayrolls = async () => {
       const response = await db
         .collection(auth.currentUser.uid)
         .orderBy("date", "desc")
@@ -44,11 +44,12 @@ export default {
     };
 
     onMounted(() => {
-      getPyrolls();
+      getPayrolls();
     });
 
     return {
       payrolls,
+      getPayrolls,
     };
   },
 };
