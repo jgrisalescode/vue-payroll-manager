@@ -8,14 +8,45 @@
 </template>
 
 <script>
+import { ref, onMounted } from "vue";
+import { auth, db } from "../utils/firebase";
 import BasicLayout from "../layouts/BasicLayout";
 import UploadPayroll from "../components/Payrolls/UploadPayroll";
 
 export default {
   name: "Payrolls",
+
   components: {
     BasicLayout,
     UploadPayroll,
+  },
+
+  setup(props) {
+    let payrolls = ref(null);
+
+    const getPyrolls = async () => {
+      const response = await db
+        .collection(auth.currentUser.uid)
+        .orderBy("date", "desc")
+        .get();
+
+      const result = [];
+
+      response.docs.forEach((doc) => {
+        const data = doc.data();
+        data.id = doc.id;
+        result.push(data);
+      });
+      payrolls.value = result;
+    };
+
+    onMounted(() => {
+      getPyrolls();
+    });
+
+    return {
+      payrolls,
+    };
   },
 };
 </script>
